@@ -1648,7 +1648,7 @@ class AvaTaxClient extends AvaTaxClientBase
         $path = "/api/v2/companies/{$companyId}/certificates/{$id}/attachment";
         $guzzleParams = [
             'query' => [],
-            'body' => null
+            'body' => $file
         ];
         return $this->restCall($path, 'POST', $guzzleParams);
     }
