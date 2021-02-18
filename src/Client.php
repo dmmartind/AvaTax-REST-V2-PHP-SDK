@@ -1,6 +1,7 @@
 <?php
 namespace Avalara;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException as ClientException;
 
 /**
  * Base AvaTaxClient object that handles connectivity to the AvaTax v2 API server.
@@ -192,11 +193,16 @@ class AvaTaxClientBase
               return $JsonBody;
             }
 
-        } catch (\Exception $e) {
-            if (!$this->catchExceptions) {
-                throw $e;
+        } catch (ClientException $e) {
+            if ($e->hasResponse()) {
+                // Get response body
+                // Modify message as proper response
+                $message = $e->getResponse()->getBody();
+                return (string) $message;
             }
-            return $e->getMessage();
+            else {
+                return $e->getMessage();
+            }
         }
     }
 }
